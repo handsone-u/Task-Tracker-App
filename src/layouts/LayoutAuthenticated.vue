@@ -1,6 +1,6 @@
 <script setup>
 import { mdiForwardburger, mdiBackburger, mdiMenu } from '@mdi/js'
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import menuAside from '@/menuAside.js'
 import menuNavBar from '@/menuNavBar.js'
@@ -11,12 +11,15 @@ import NavBar from '@/components/NavBar.vue'
 import NavBarItemPlain from '@/components/NavBarItemPlain.vue'
 import AsideMenu from '@/components/AsideMenu.vue'
 import FooterBar from '@/components/FooterBar.vue'
+import { useUserStore } from '@/stores/user'
 
 const layoutAsidePadding = 'xl:pl-60'
 
 const darkModeStore = useDarkModeStore()
 
 const router = useRouter()
+
+const userStore = useUserStore()
 
 const isAsideMobileExpanded = ref(false)
 const isAsideLgActive = ref(false)
@@ -26,13 +29,24 @@ router.beforeEach(() => {
   isAsideLgActive.value = false
 })
 
+watch(
+  () => userStore.isAuthenticated,
+  (isAuthenticated) => {
+    if (!isAuthenticated) {
+      router.push('/login')
+    }
+  },
+  { immediate: true },
+)
+
 const menuClick = (event, item) => {
   if (item.isToggleLightDark) {
     darkModeStore.set()
   }
 
   if (item.isLogout) {
-    //
+    userStore.logout()
+    router.push('/login')
   }
 }
 </script>

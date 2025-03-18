@@ -10,7 +10,7 @@ import {
   mdiTelevisionGuide,
   mdiResponsive,
   mdiPalette,
-  mdiReact,
+  mdiServerNetwork,
 } from '@mdi/js'
 
 export default [
@@ -72,15 +72,9 @@ export default [
     ],
   },
   {
-    href: 'https://github.com/justboil/admin-one-vue-tailwind',
-    label: 'GitHub',
-    icon: mdiGithub,
-    target: '_blank',
-  },
-  {
-    href: 'https://github.com/justboil/admin-one-react-tailwind',
-    label: 'React version',
-    icon: mdiReact,
+    href: 'https://localhost:8080/swagger-ui/',
+    label: 'Swagger-UI',
+    icon: mdiServerNetwork,
     target: '_blank',
   },
 ]

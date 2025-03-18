@@ -10,7 +10,11 @@ const year = new Date().getFullYear()
   <footer class="py-2 px-6" :class="containerMaxW">
     <BaseLevel>
       <div class="text-center md:text-left">
-        <b>&copy;{{ year }}, <a href="https://justboil.me/" target="_blank">JustBoil.me</a>.</b>
+        <b>&copy;{{ year }}, Task Tracker</b>
+        <br />
+        <a href="https://github.com/handsone-u/task-tracker-app" target="_blank"
+          >Source Code on GitHub</a
+        >
         <slot />
       </div>
       <div class="md:py-2">

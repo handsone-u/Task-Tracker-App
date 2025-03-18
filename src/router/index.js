@@ -1,3 +1,4 @@
+import LayoutAuthenticated from '@/layouts/LayoutAuthenticated.vue'
 import { name } from '@vue/eslint-config-prettier/skip-formatting'
 import { createRouter, createWebHashHistory } from 'vue-router'
 
@@ -25,6 +26,11 @@ const routes = [
     path: '/',
     name: 'home',
     component: () => import('@/views/HomeView.vue'),
+  },
+  {
+    path: '/authenticated',
+    name: 'authenticated',
+    component: LayoutAuthenticated,
   },
 ]
 
