@@ -18,14 +18,14 @@ const routes = [
     name: 'register',
     component: () => import('@/views/RegisterView.vue'),
   },
-  // {
-  //   meta: {
-  //     title: 'Home',
-  //   },
-  //   path: '/',
-  //   name: 'home',
-  //   component: () => import(''),
-  // },
+  {
+    meta: {
+      title: 'Home',
+    },
+    path: '/',
+    name: 'home',
+    component: () => import('@/views/HomeView.vue'),
+  },
 ]
 
 const router = createRouter({
