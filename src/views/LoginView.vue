@@ -10,17 +10,28 @@ import FormControl from '@/components/FormControl.vue'
 import BaseButton from '@/components/BaseButton.vue'
 import BaseButtons from '@/components/BaseButtons.vue'
 import LayoutGuest from '@/layouts/LayoutGuest.vue'
+import { useUserStore } from '@/stores/user'
+import { login } from '@/services/api'
 
 const form = reactive({
-  login: 'john.doe',
-  pass: 'highly-secure-password-fYjUw-',
+  email: 'example@gmail.com',
+  password: 'asdf!!',
   remember: true,
 })
 
 const router = useRouter()
 
-const submit = () => {
-  router.push('/dashboard')
+const userStore = useUserStore()
+
+const submit = async () => {
+  login(form.email, form.password)
+    .then((data) => {
+      userStore.setJwtToken(data.token)
+      router.push('/dashboard')
+    })
+    .catch((error) => {
+      alert('Login failed: ' + error.message)
+    })
 }
 </script>
 
@@ -28,18 +39,13 @@ const submit = () => {
   <LayoutGuest>
     <SectionFullScreen v-slot="{ cardClass }" bg="purplePink">
       <CardBox :class="cardClass" is-form @submit.prevent="submit">
-        <FormField label="Login" help="Please enter your login">
-          <FormControl
-            v-model="form.login"
-            :icon="mdiAccount"
-            name="login"
-            autocomplete="username"
-          />
+        <FormField label="Email" help="Please enter your Email">
+          <FormControl v-model="form.email" :icon="mdiAccount" name="email" autocomplete="email" />
         </FormField>
 
         <FormField label="Password" help="Please enter your password">
           <FormControl
-            v-model="form.pass"
+            v-model="form.password"
             :icon="mdiAsterisk"
             type="password"
             name="password"
