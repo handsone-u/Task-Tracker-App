@@ -1,3 +1,4 @@
+import { login } from '@/services/api'
 import { defineStore } from 'pinia'
 import { computed, ref } from 'vue'
 
@@ -14,18 +15,14 @@ export const useUserStore = defineStore('user', () => {
     id.value = newId
   }
 
-  function setUsername(newUsername) {
-    username.value = newUsername
-  }
-
-  function setJwtToken(token) {
+  function login(token, username0) {
     jwt.value = token
+    username.value = username0
   }
 
   function logout() {
     id.value = null
     username.value = null
-    jwt.value
   }
 
   return {
@@ -35,8 +32,7 @@ export const useUserStore = defineStore('user', () => {
     isFieldFocusRegistered,
     isAuthenticated,
     setId,
-    setUsername,
-    setJwtToken,
+    login,
     logout,
   }
 })

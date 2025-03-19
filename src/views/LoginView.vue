@@ -26,7 +26,7 @@ const userStore = useUserStore()
 const submit = async () => {
   login(form.email, form.password)
     .then((data) => {
-      userStore.setJwtToken(data.token)
+      userStore.login(data.token, data.username)
       router.push('/dashboard')
     })
     .catch((error) => {

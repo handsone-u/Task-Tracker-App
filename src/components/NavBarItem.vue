@@ -2,11 +2,11 @@
 import { mdiChevronUp, mdiChevronDown } from '@mdi/js'
 import { RouterLink } from 'vue-router'
 import { computed, ref, onMounted, onBeforeUnmount } from 'vue'
-import { useMainStore } from '@/stores/main.js'
 import BaseIcon from '@/components/BaseIcon.vue'
 import UserAvatarCurrentUser from '@/components/UserAvatarCurrentUser.vue'
 import NavBarMenuList from '@/components/NavBarMenuList.vue'
 import BaseDivider from '@/components/BaseDivider.vue'
+import { useUserStore } from '@/stores/user'
 
 const props = defineProps({
   item: {
@@ -45,7 +45,7 @@ const componentClass = computed(() => {
 })
 
 const itemLabel = computed(() =>
-  props.item.isCurrentUser ? useMainStore().userName : props.item.label,
+  props.item.isCurrentUser ? useUserStore().username : props.item.label,
 )
 
 const isDropdownActive = ref(false)
@@ -103,7 +103,7 @@ onBeforeUnmount(() => {
           item.menu,
       }"
     >
-      <UserAvatarCurrentUser v-if="item.isCurrentUser" class="w-6 h-6 mr-3 inline-flex" />
+      <!-- <UserAvatarCurrentUser v-if="item.isCurrentUser" class="w-6 h-6 mr-3 inline-flex" /> -->
       <BaseIcon v-if="item.icon" :path="item.icon" class="transition-colors" />
       <span
         class="px-2 transition-colors"
