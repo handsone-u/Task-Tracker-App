@@ -4,6 +4,8 @@ import { createPinia } from 'pinia'
 import App from './App.vue'
 import router from './router'
 import { useMainStore } from '@/stores/main.js'
+import { useDarkModeStore } from './stores/darkMode'
+import { useUserStore } from './stores/user'
 
 import './css/main.css'
 
@@ -20,18 +22,22 @@ const mainStore = useMainStore(pinia)
 mainStore.fetchSampleClients()
 mainStore.fetchSampleHistory()
 
-// Dark mode
-// Uncomment, if you'd like to restore persisted darkMode setting, or use `prefers-color-scheme: dark`. Make sure to uncomment localStorage block in src/stores/darkMode.js
-// import { useDarkModeStore } from './stores/darkMode'
+// Init dark mode store
+const darkModeStore = useDarkModeStore(pinia)
 
-// const darkModeStore = useDarkModeStore(pinia)
+if (
+  (!localStorage['darkMode'] && window.matchMedia('(prefers-color-scheme: dark)').matches) ||
+  localStorage['darkMode'] === '1'
+) {
+  darkModeStore.set(true)
+}
 
-// if (
-//   (!localStorage['darkMode'] && window.matchMedia('(prefers-color-scheme: dark)').matches) ||
-//   localStorage['darkMode'] === '1'
-// ) {
-//   darkModeStore.set(true)
-// }
+// Init user store
+const userStore = useUserStore(pinia)
+
+if (userStore.jwt) {
+  userStore.login(userStore.jwt, userStore.username)
+}
 
 // Default title tag
 const defaultDocumentTitle = 'Admin One Vue 3 Tailwind'
