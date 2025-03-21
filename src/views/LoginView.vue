@@ -11,7 +11,7 @@ import BaseButton from '@/components/BaseButton.vue'
 import BaseButtons from '@/components/BaseButtons.vue'
 import LayoutGuest from '@/layouts/LayoutGuest.vue'
 import { useUserStore } from '@/stores/user'
-import { login } from '@/services/api'
+import { api } from '@/services'
 
 const form = reactive({
   email: 'example@gmail.com',
@@ -24,7 +24,8 @@ const router = useRouter()
 const userStore = useUserStore()
 
 const submit = async () => {
-  login(form.email, form.password)
+  api
+    .login(form.email, form.password)
     .then((data) => {
       userStore.login(data.token, data.username)
       router.push('/dashboard')

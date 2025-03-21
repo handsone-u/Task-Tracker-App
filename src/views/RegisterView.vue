@@ -9,7 +9,7 @@ import FormControl from '@/components/FormControl.vue'
 import BaseButton from '@/components/BaseButton.vue'
 import BaseButtons from '@/components/BaseButtons.vue'
 import LayoutGuest from '@/layouts/LayoutGuest.vue'
-import { register } from '@/services/api'
+import { api } from '@/services'
 
 const form = reactive({
   email: '',
@@ -26,7 +26,8 @@ const submit = () => {
     return
   }
 
-  register(form.email, form.password, form.username)
+  api
+    .register(form.email, form.password, form.username)
     .then(() => {
       alert('Registration successful! Please login.')
       router.push('/login')
