@@ -8,7 +8,8 @@
     "local": "vite --mode local-dev",
     "dev": "vite --mode dev",
     "prod": "vite --mode prod",
-    "build": "vite build --mode prod",
+    "build": "vite build",
+    "build prod": "vite build -- mode prod",
     "preview": "vite preview",
     "lint": "eslint . --fix",
     "format": "prettier --write src/"

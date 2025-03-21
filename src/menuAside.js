@@ -18,7 +18,7 @@ export default [
   },
   // TODO: Remove before main, release.
   {
-    href: 'http://localhost:8080/swagger-ui/',
+    href: 'http://localhost:8080/swagger-ui',
     label: 'Swagger-UI',
     icon: mdiServerNetwork,
     target: '_blank',

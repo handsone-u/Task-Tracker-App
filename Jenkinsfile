@@ -1,15 +1,28 @@
 pipeline {
     agent any
 
+    environment {
+        DEPLOY_DIR = "/var/www/html/task-tracker"
+    }
+
     stages {
+        stage('Install Dependencies') {
+            steps {
+                sh 'npm install'
+            }
+        }
+
         stage('Build') {
             steps {
+                sh 'npm run build'
+            }
+        }
+
+        stage('Deploy') {
+            steps {
                 sh '''
-                cd ${WORKSPACE}
-                npm install
-                npm run build
-                sudo rm -rf /var/www/html/*
-                sudo cp -r dist/* /var/www/html/
+                rm -rf ${DEPLOY_DIR}/*
+                cp -r dist/. $DEPLOY_DIR
                 '''
             }
         }
