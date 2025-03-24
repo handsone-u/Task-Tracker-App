@@ -1,6 +1,6 @@
-import { RestAPI } from './restAPI'
-import { MockAPI } from './mockAPI'
-import { IApiClient } from './apiClient'
+import { RestMemberAPI } from './restMemberApi'
+import { MockMemberApi } from './mockMemberApi'
+import { MemberApi } from './memberApi'
 
-export const api: IApiClient =
-  import.meta.env.VITE_USE_MOCK_API === 'true' ? new MockAPI() : new RestAPI()
+export const memberApiClient: MemberApi =
+  import.meta.env.VITE_USE_MOCK_API === 'true' ? new MockMemberApi() : new RestMemberAPI()

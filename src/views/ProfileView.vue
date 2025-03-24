@@ -19,9 +19,8 @@ import UserCard from '@/components/UserCard.vue'
 import LayoutAuthenticated from '@/layouts/LayoutAuthenticated.vue'
 import SectionTitleLineWithButton from '@/components/SectionTitleLineWithButton.vue'
 import { useUserStore } from '@/stores/user'
-import { api } from '@/services'
+import { memberApiClient } from '@/services'
 import InvitationTable from '@/components/profile/InvitationTable.vue'
-import TableSampleClients from '@/components/TableSampleClients.vue'
 
 const userStore = useUserStore()
 
@@ -47,7 +46,7 @@ const togglePasswordFormEditable = () => {
 }
 
 const submitProfile = () => {
-  api
+  memberApiClient
     .updateProfile(profileForm.username)
     .then(() => {
       userStore.setUserInformation(userStore.jwt, userStore.id, profileForm.username)
@@ -58,7 +57,7 @@ const submitProfile = () => {
 }
 
 const submitPass = () => {
-  api
+  memberApiClient
     .resetPassword(passwordForm.password, passwordForm.password_confirmation)
     .then()
     .catch((error) => {

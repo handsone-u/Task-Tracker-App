@@ -1,9 +1,9 @@
 <script setup>
-import { api } from '@/services'
+import { memberApiClient } from '@/services'
 import { ref, computed, onMounted } from 'vue'
 import BaseButton from '../BaseButton.vue'
 import BaseButtons from '../BaseButtons.vue'
-import { mdiEye, mdiTrashCan, mdiHandOkay } from '@mdi/js'
+import { mdiTrashCan, mdiHandOkay } from '@mdi/js'
 import BaseLevel from '../BaseLevel.vue'
 import TableCheckboxCell from '../TableCheckboxCell.vue'
 
@@ -57,14 +57,14 @@ const remove = (arr, cb) => {
 }
 
 function acceptInvitation(itemId) {
-  api.acceptInvitation(itemId).catch((error) => {
+  memberApiClient.acceptInvitation(itemId).catch((error) => {
     console.error(error)
   })
   invitations.value = invitations.value.filter((item) => item.id !== itemId)
 }
 
 function declineInvitation(itemId) {
-  api.declineInvitation(itemId).catch((error) => {
+  memberApiClient.declineInvitation(itemId).catch((error) => {
     console.error(error)
   })
   invitations.value = invitations.value.filter((item) => item.id !== itemId)
@@ -72,7 +72,7 @@ function declineInvitation(itemId) {
 
 onMounted(async () => {
   try {
-    api
+    memberApiClient
       .getInvitations()
       .then((data) => {
         console.log(data)

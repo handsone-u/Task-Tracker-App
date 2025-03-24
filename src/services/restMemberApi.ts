@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { IApiClient } from './apiClient'
+import { MemberApi } from './memberApi'
 import { FindInvitationsResponse } from './response/FindInvitationsResponse'
 
 const apiClient = axios.create({
@@ -9,7 +9,7 @@ const apiClient = axios.create({
   },
 })
 
-export class RestAPI implements IApiClient {
+export class RestMemberAPI implements MemberApi {
   async login(email: string, password: string): Promise<any> {
     const response = await apiClient.post('/v0/members/login', {
       id: email,

@@ -1,7 +1,7 @@
-import { IApiClient } from './apiClient'
+import { MemberApi } from './memberApi'
 import { FindInvitationsResponse, Invitation } from './response/FindInvitationsResponse'
 
-export class MockAPI implements IApiClient {
+export class MockMemberApi implements MemberApi {
   async login(email: string, password: string): Promise<any> {
     console.log('Mock login:', email, password)
     return Promise.resolve({

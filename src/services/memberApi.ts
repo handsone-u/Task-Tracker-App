@@ -1,6 +1,6 @@
 import { FindInvitationsResponse } from './response/FindInvitationsResponse'
 
-export interface IApiClient {
+export interface MemberApi {
   login(email: string, password: string): Promise<any>
   register(email: string, password: string, username: string): Promise<void>
   resetPassword(password: string, confirmPassword: string): Promise<void>
