@@ -6,6 +6,7 @@ import {
   mdiAsterisk,
   mdiFormTextboxPassword,
   mdiAccountMultiplePlus,
+  mdiInformation,
 } from '@mdi/js'
 import SectionMain from '@/components/SectionMain.vue'
 import CardBox from '@/components/CardBox.vue'
@@ -21,6 +22,7 @@ import SectionTitleLineWithButton from '@/components/SectionTitleLineWithButton.
 import { useUserStore } from '@/stores/user'
 import { memberApiClient } from '@/services'
 import InvitationTable from '@/components/profile/InvitationTable.vue'
+import NotificationBar from '@/components/NotificationBar.vue'
 
 const userStore = useUserStore()
 
@@ -37,6 +39,14 @@ const passwordForm = reactive({
   isEdittable: false,
 })
 
+const notification = reactive({
+  visible: false,
+  title: '',
+  text: '',
+  icon: '',
+  color: 'info', // info, success, danger, warning
+})
+
 const toggleProfileFormEditable = () => {
   profileForm.isEdittable = !profileForm.isEdittable
 }
@@ -45,21 +55,41 @@ const togglePasswordFormEditable = () => {
   passwordForm.isEdittable = !passwordForm.isEdittable
 }
 
+const closeNotification = () => {
+  notification.visible = false
+}
+
 const submitProfile = () => {
   memberApiClient
     .updateProfile(profileForm.username)
     .then(() => {
       userStore.setUserInformation(userStore.jwt, userStore.id, profileForm.username)
+      notification.visible = true
+      notification.title = 'Profile updated'
+      notification.text = 'Your profile has been updated successfully.'
+      notification.icon = mdiInformation
+      notification.color = 'success'
+      profileForm.isEdittable = false
     })
     .catch((error) => {
       console.error(error)
+      notification.visible = true
+      notification.title = 'Profile update failed'
+      notification.text = 'Failed to update your profile. Please try again.'
+      notification.icon = mdiInformation
+      notification.color = 'danger'
     })
 }
 
-const submitPass = () => {
+const submitPassword = () => {
   memberApiClient
     .resetPassword(passwordForm.password, passwordForm.password_confirmation)
-    .then()
+    .then(() => {
+      passwordForm.isEdittable = false
+      passwordForm.password_current = ''
+      passwordForm.password = ''
+      passwordForm.password_confirmation = ''
+    })
     .catch((error) => {
       console.error(error)
     })
@@ -73,6 +103,17 @@ const submitPass = () => {
       </SectionTitleLineWithButton>
 
       <UserCard class="mb-6" />
+
+      <NotificationBar
+        v-if="notification.visible"
+        :color="notification.color"
+        :icon="notification.icon"
+      >
+        <b>{{ notification.title }} </b>. {{ notification.text }}
+        <template #right>
+          <BaseButton label="Close" :rounded-full="true" small @click="closeNotification" />
+        </template>
+      </NotificationBar>
 
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <CardBox is-form @submit.prevent="submitProfile">
@@ -115,7 +156,7 @@ const submitPass = () => {
           </template>
         </CardBox>
 
-        <CardBox is-form @submit.prevent="submitPass">
+        <CardBox is-form @submit.prevent="submitPassword">
           <FormField label="Current password" help="Required. Your current password">
             <FormControl
               v-model="passwordForm.password_current"
