@@ -16,6 +16,7 @@ const pinia = createPinia()
 createApp(App).use(router).use(pinia).mount('#app')
 
 // Init main store
+// TODO: Remove this store.
 const mainStore = useMainStore(pinia)
 
 // Fetch sample data
@@ -44,7 +45,7 @@ if (localStorage.getItem('jwt')) {
 }
 
 // Default title tag
-const defaultDocumentTitle = 'Admin One Vue 3 Tailwind'
+const defaultDocumentTitle = 'Task-Tracker'
 
 // Set document title from route meta
 router.afterEach((to) => {

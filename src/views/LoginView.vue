@@ -28,7 +28,7 @@ const submit = async () => {
     .login(form.email, form.password)
     .then((data) => {
       userStore.setUserInformation(data.token, form.email, data.username)
-      router.push('/dashboard')
+      router.push('/profile')
     })
     .catch((error) => {
       alert('Login failed: ' + error.message)

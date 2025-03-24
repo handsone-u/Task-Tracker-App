@@ -1,6 +1,12 @@
 <script setup>
 import { reactive } from 'vue'
-import { mdiAccount, mdiMail, mdiAsterisk, mdiFormTextboxPassword } from '@mdi/js'
+import {
+  mdiAccount,
+  mdiMail,
+  mdiAsterisk,
+  mdiFormTextboxPassword,
+  mdiAccountMultiplePlus,
+} from '@mdi/js'
 import SectionMain from '@/components/SectionMain.vue'
 import CardBox from '@/components/CardBox.vue'
 import BaseDivider from '@/components/BaseDivider.vue'
@@ -14,6 +20,8 @@ import LayoutAuthenticated from '@/layouts/LayoutAuthenticated.vue'
 import SectionTitleLineWithButton from '@/components/SectionTitleLineWithButton.vue'
 import { useUserStore } from '@/stores/user'
 import { api } from '@/services'
+import InvitationTable from '@/components/profile/InvitationTable.vue'
+import TableSampleClients from '@/components/TableSampleClients.vue'
 
 const userStore = useUserStore()
 
@@ -160,6 +168,11 @@ const submitPass = () => {
           </template>
         </CardBox>
       </div>
+      <SectionTitleLineWithButton :icon="mdiAccountMultiplePlus" title="Invitation">
+      </SectionTitleLineWithButton>
+      <CardBox class="mb-6" has-table>
+        <InvitationTable />
+      </CardBox>
     </SectionMain>
   </LayoutAuthenticated>
 </template>

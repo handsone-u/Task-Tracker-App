@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { IApiClient } from './apiClient'
+import { FindInvitationsResponse } from './response/FindInvitationsResponse'
 
 const apiClient = axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL,
@@ -39,5 +40,17 @@ export class RestAPI implements IApiClient {
       newUsername: newUsername,
     })
     return response.data
+  }
+
+  async getInvitations(): Promise<FindInvitationsResponse> {
+    throw new Error('Method not implemented.')
+  }
+
+  async acceptInvitation(invitationId: number): Promise<void> {
+    throw new Error('Method not implemented.')
+  }
+
+  async declineInvitation(invitationId: number): Promise<void> {
+    throw new Error('Method not implemented.')
   }
 }
