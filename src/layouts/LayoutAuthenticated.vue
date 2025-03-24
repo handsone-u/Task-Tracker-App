@@ -45,7 +45,7 @@ const menuClick = (event, item) => {
   }
 
   if (item.isLogout) {
-    userStore.logout()
+    userStore.setLogout()
     router.push('/login')
   }
 }
@@ -87,12 +87,7 @@ const menuClick = (event, item) => {
         @aside-lg-close-click="isAsideLgActive = false"
       />
       <slot />
-      <FooterBar>
-        Get more with
-        <a href="https://tailwind-vue.justboil.me/" target="_blank" class="text-blue-600"
-          >Premium version</a
-        >
-      </FooterBar>
+      <FooterBar> <a>Source Code on </a> </FooterBar>
     </div>
   </div>
 </template>
