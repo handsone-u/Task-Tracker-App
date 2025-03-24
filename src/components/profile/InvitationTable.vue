@@ -56,14 +56,14 @@ const remove = (arr, cb) => {
   return newArr
 }
 
-function acceptInvitation(itemId) {
+const acceptInvitation = (itemId) => {
   memberApiClient.acceptInvitation(itemId).catch((error) => {
     console.error(error)
   })
   invitations.value = invitations.value.filter((item) => item.id !== itemId)
 }
 
-function declineInvitation(itemId) {
+const declineInvitation = (itemId) => {
   memberApiClient.declineInvitation(itemId).catch((error) => {
     console.error(error)
   })
@@ -110,7 +110,7 @@ onMounted(async () => {
               label="Accept"
               :icon="mdiHandOkay"
               :rounded-full="true"
-              @click="acceptInvitation(item.id)"
+              @click="() => acceptInvitation(item.id)"
               small
             />
             <BaseButton
@@ -118,7 +118,7 @@ onMounted(async () => {
               label="Decline"
               :icon="mdiTrashCan"
               :rounded-full="true"
-              @click="declineInvitation(item.id)"
+              @click="() => declineInvitation(item.id)"
               small
             />
           </BaseButtons>
