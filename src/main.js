@@ -35,8 +35,12 @@ if (
 // Init user store
 const userStore = useUserStore(pinia)
 
-if (userStore.jwt) {
-  userStore.login(userStore.jwt, userStore.username)
+if (localStorage.getItem('jwt')) {
+  userStore.setUserInformation(
+    localStorage.getItem('jwt'),
+    localStorage.getItem('id'),
+    localStorage.getItem('username'),
+  )
 }
 
 // Default title tag

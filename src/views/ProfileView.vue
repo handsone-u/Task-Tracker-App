@@ -1,7 +1,6 @@
 <script setup>
 import { reactive } from 'vue'
-import { useMainStore } from '@/stores/main'
-import { mdiAccount, mdiMail, mdiAsterisk, mdiFormTextboxPassword, mdiGithub } from '@mdi/js'
+import { mdiAccount, mdiMail, mdiAsterisk, mdiFormTextboxPassword } from '@mdi/js'
 import SectionMain from '@/components/SectionMain.vue'
 import CardBox from '@/components/CardBox.vue'
 import BaseDivider from '@/components/BaseDivider.vue'
@@ -13,26 +12,50 @@ import BaseButtons from '@/components/BaseButtons.vue'
 import UserCard from '@/components/UserCard.vue'
 import LayoutAuthenticated from '@/layouts/LayoutAuthenticated.vue'
 import SectionTitleLineWithButton from '@/components/SectionTitleLineWithButton.vue'
+import { useUserStore } from '@/stores/user'
+import { api } from '@/services'
 
-const mainStore = useMainStore()
+const userStore = useUserStore()
 
 const profileForm = reactive({
-  name: mainStore.userName,
-  email: mainStore.userEmail,
+  username: userStore.username,
+  email: userStore.id,
+  isEdittable: false,
 })
 
 const passwordForm = reactive({
   password_current: '',
   password: '',
   password_confirmation: '',
+  isEdittable: false,
 })
 
+const toggleProfileFormEditable = () => {
+  profileForm.isEdittable = !profileForm.isEdittable
+}
+
+const togglePasswordFormEditable = () => {
+  passwordForm.isEdittable = !passwordForm.isEdittable
+}
+
 const submitProfile = () => {
-  mainStore.setUser(profileForm)
+  api
+    .updateProfile(profileForm.username)
+    .then(() => {
+      userStore.setUserInformation(userStore.jwt, userStore.id, profileForm.username)
+    })
+    .catch((error) => {
+      console.error(error)
+    })
 }
 
 const submitPass = () => {
-  //
+  api
+    .resetPassword(passwordForm.password, passwordForm.password_confirmation)
+    .then()
+    .catch((error) => {
+      console.error(error)
+    })
 }
 </script>
 
@@ -40,32 +63,24 @@ const submitPass = () => {
   <LayoutAuthenticated>
     <SectionMain>
       <SectionTitleLineWithButton :icon="mdiAccount" title="Profile" main>
-        <BaseButton
-          href="https://github.com/justboil/admin-one-vue-tailwind"
-          target="_blank"
-          :icon="mdiGithub"
-          label="Star on GitHub"
-          color="contrast"
-          rounded-full
-          small
-        />
       </SectionTitleLineWithButton>
 
       <UserCard class="mb-6" />
 
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <CardBox is-form @submit.prevent="submitProfile">
-          <FormField label="Avatar" help="Max 500kb">
+          <!-- <FormField label="Avatar" help="Max 500kb">
             <FormFilePicker label="Upload" />
-          </FormField>
+          </FormField> -->
 
-          <FormField label="Name" help="Required. Your name">
+          <FormField label="Username" help="Required. Your name">
             <FormControl
-              v-model="profileForm.name"
+              v-model="profileForm.username"
               :icon="mdiAccount"
               name="username"
               required
               autocomplete="username"
+              :disabled="!profileForm.isEdittable"
             />
           </FormField>
           <FormField label="E-mail" help="Required. Your e-mail">
@@ -76,13 +91,19 @@ const submitPass = () => {
               name="email"
               required
               autocomplete="email"
+              :disabled="!profileForm.isEdittable"
             />
           </FormField>
 
           <template #footer>
             <BaseButtons>
-              <BaseButton color="info" type="submit" label="Submit" />
-              <BaseButton color="info" label="Options" outline />
+              <BaseButton
+                color="info"
+                type="submit"
+                label="Submit"
+                :disabled="!profileForm.isEdittable"
+              />
+              <BaseButton color="info" label="Edit" outline @click="toggleProfileFormEditable" />
             </BaseButtons>
           </template>
         </CardBox>
@@ -96,6 +117,7 @@ const submitPass = () => {
               type="password"
               required
               autocomplete="current-password"
+              :disabled="!passwordForm.isEdittable"
             />
           </FormField>
 
@@ -109,6 +131,7 @@ const submitPass = () => {
               type="password"
               required
               autocomplete="new-password"
+              :disabled="!passwordForm.isEdittable"
             />
           </FormField>
 
@@ -120,13 +143,19 @@ const submitPass = () => {
               type="password"
               required
               autocomplete="new-password"
+              :disabled="!passwordForm.isEdittable"
             />
           </FormField>
 
           <template #footer>
             <BaseButtons>
-              <BaseButton type="submit" color="info" label="Submit" />
-              <BaseButton color="info" label="Options" outline />
+              <BaseButton
+                type="submit"
+                color="info"
+                label="Submit"
+                :disabled="!passwordForm.isEdittable"
+              />
+              <BaseButton color="info" label="Edit" outline @click="togglePasswordFormEditable" />
             </BaseButtons>
           </template>
         </CardBox>

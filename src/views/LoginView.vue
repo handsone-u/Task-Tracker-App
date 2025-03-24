@@ -27,7 +27,7 @@ const submit = async () => {
   api
     .login(form.email, form.password)
     .then((data) => {
-      userStore.login(data.token, data.username)
+      userStore.setUserInformation(data.token, form.email, data.username)
       router.push('/dashboard')
     })
     .catch((error) => {

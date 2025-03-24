@@ -9,7 +9,7 @@ const apiClient = axios.create({
 })
 
 export class RestAPI implements IApiClient {
-  async login(email: any, password: any): Promise<any> {
+  async login(email: string, password: string): Promise<any> {
     const response = await apiClient.post('/v0/members/login', {
       id: email,
       password: password,
@@ -17,11 +17,26 @@ export class RestAPI implements IApiClient {
     return response.data
   }
 
-  async register(email: any, password: any, username: any): Promise<any> {
+  async register(email: string, password: string, username: string): Promise<void> {
     const response = await apiClient.post('/v0/members/register', {
       id: email,
       password: password,
       username: username,
+    })
+    return response.data
+  }
+
+  async resetPassword(password: string, confirmPassword: string): Promise<void> {
+    const response = await apiClient.post('/v0/members/reset-password', {
+      password: password,
+      confirmPassword: confirmPassword,
+    })
+    return response.data
+  }
+
+  async updateProfile(newUsername: string): Promise<void> {
+    const response = await apiClient.patch('/v0/members/me', {
+      newUsername: newUsername,
     })
     return response.data
   }

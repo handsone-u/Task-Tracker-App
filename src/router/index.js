@@ -28,6 +28,14 @@ const routes = [
     component: () => import('@/views/HomeView.vue'),
   },
   {
+    meta: {
+      title: 'Profile',
+    },
+    path: '/profile',
+    name: 'profile',
+    component: () => import('@/views/ProfileView.vue'),
+  },
+  {
     path: '/authenticated',
     name: 'authenticated',
     component: LayoutAuthenticated,
