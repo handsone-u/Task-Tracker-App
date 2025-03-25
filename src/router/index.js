@@ -1,4 +1,5 @@
 import LayoutAuthenticated from '@/layouts/LayoutAuthenticated.vue'
+import TeamView from '@/views/TeamView.vue'
 import { name } from '@vue/eslint-config-prettier/skip-formatting'
 import { createRouter, createWebHashHistory } from 'vue-router'
 
@@ -34,6 +35,14 @@ const routes = [
     path: '/profile',
     name: 'profile',
     component: () => import('@/views/ProfileView.vue'),
+  },
+  {
+    mata: {
+      title: 'Teams',
+    },
+    path: '/teams',
+    name: 'teams',
+    component: () => import('@/views/TeamView.vue'),
   },
   {
     path: '/authenticated',
