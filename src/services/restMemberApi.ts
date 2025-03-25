@@ -1,12 +1,21 @@
 import axios from 'axios'
 import { MemberApi } from './memberApi'
 import { FindInvitationsResponse } from './response/FindInvitationsResponse'
+import { useUserStore } from '@/stores/user'
 
 const apiClient = axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL,
   headers: {
     'Content-Type': 'application/json',
   },
+})
+
+apiClient.interceptors.request.use((config) => {
+  const userStore = useUserStore()
+  if (userStore.jwt) {
+    config.headers.Authorization = `Bearer ${userStore.jwt}`
+  }
+  return config
 })
 
 export class RestMemberAPI implements MemberApi {
