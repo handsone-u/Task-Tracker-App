@@ -5,12 +5,14 @@ import SectionMain from '@/components/SectionMain.vue'
 import SectionTitleLineWithButton from '@/components/SectionTitleLineWithButton.vue'
 import LayoutAuthenticated from '@/layouts/LayoutAuthenticated.vue'
 import { mdiAccountGroup } from '@mdi/js'
-import { reactive, ref } from 'vue'
+import { onMounted, reactive, ref } from 'vue'
 import CardBoxModal from '@/components/CardBoxModal.vue'
 import FormField from '@/components/FormField.vue'
 import FormControl from '@/components/FormControl.vue'
 import { teamApiClient } from '@/services'
 import BaseDivider from '@/components/BaseDivider.vue'
+import router from '@/router'
+import BaseButtons from '@/components/BaseButtons.vue'
 
 const isCreateModalOpen = ref(false)
 
@@ -31,6 +33,45 @@ const confirm = () => {
       console.log(error)
     })
 }
+
+const teams = ref([])
+
+const goToTeam = (teamId) => {
+  router.push(`/teams/${teamId}/dashboard`)
+}
+
+const leaveTeam = (teamId) => {
+  teamApiClient
+    .leaveTeam(teamId)
+    .then(() => {
+      teams.value = teams.value.filter((t) => t.teamId !== teamId)
+    })
+    .catch((error) => {
+      console.error(error)
+    })
+}
+
+onMounted(async () => {
+  try {
+    teamApiClient
+      .getMyTeamsWithManager()
+      .then((data) => {
+        data.myTeams.forEach((t) => {
+          teams.value.push({
+            teamId: t.teamId,
+            teamName: t.teamName,
+            myTeamRole: t.myTeamRole,
+            teamManagerUsername: t.teamManagerUsername,
+          })
+        })
+      })
+      .catch((error) => {
+        console.error(error)
+      })
+  } catch (error) {
+    console.error(error)
+  }
+})
 </script>
 
 <template>
@@ -40,7 +81,45 @@ const confirm = () => {
         <BaseButton label="create team" color="info" @click="isCreateModalOpen = true" />
       </SectionTitleLineWithButton>
 
-      <CardBox> </CardBox>
+      <CardBox>
+        <table class="w-full">
+          <thead>
+            <tr class="border-b">
+              <th class="p-3 text-left">teamName</th>
+              <th class="p-3 text-left">teamManagerUsername</th>
+              <th class="p-3 text-left">myRole</th>
+              <th class="p-3 text-center">액션</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="team in teams" :key="team.teamId" class="border-b">
+              <td class="p-3">{{ team.teamName }}</td>
+              <td class="p-3">{{ team.teamManagerUsername }}</td>
+              <td class="p-3">{{ team.myTeamRole }}</td>
+              <td class="p-3">
+                <!-- // TODO: 팀 매니저는 팀 삭제 가능하도록 버튼 구현. -->
+                <BaseButtons type="justify-start lg:justify-center" no-wrap>
+                  <BaseButton
+                    label="보기"
+                    color="info"
+                    :rounded-full="true"
+                    small
+                    @click="() => goToTeam(team.teamId)"
+                  />
+                  <BaseButton
+                    label="탈퇴"
+                    color="danger"
+                    :rounded-full="true"
+                    outline
+                    small
+                    @click="() => leaveTeam(team.teamId)"
+                  />
+                </BaseButtons>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </CardBox>
 
       <CardBoxModal
         v-model="isCreateModalOpen"

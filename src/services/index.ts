@@ -6,6 +6,8 @@ import { TeamApi } from './teamAPI'
 
 const isMock = import.meta.env.VITE_USE_MOCK_API
 
+console.log('isMock', isMock)
+
 export const memberApiClient: MemberApi =
   isMock === 'true' ? new MockMemberApi() : new RestMemberAPI()
 
