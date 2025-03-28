@@ -13,6 +13,7 @@ import { teamApiClient } from '@/services'
 import BaseDivider from '@/components/BaseDivider.vue'
 import router from '@/router'
 import BaseButtons from '@/components/BaseButtons.vue'
+import BaseTable from '@/components/BaseTable.vue'
 
 const isCreateModalOpen = ref(false)
 
@@ -36,7 +37,20 @@ const confirm = () => {
 
 const teams = ref([])
 
-const goToTeam = (teamId) => {
+const headers = [
+  { key: 'teamName', label: '팀 이름' },
+  { key: 'teamManagerUsername', label: '팀장' },
+  { key: 'myTeamRole', label: '역할' },
+]
+
+const goToTeam = (item) => {
+  console.log('item:', item) // item 값 확인
+  const teamId = item.teamId
+  console.log('teamId:', teamId) // teamId 값 확인
+  if (!teamId) {
+    console.error('Invalid teamId:', teamId)
+    return
+  }
   router.push(`/teams/${teamId}/dashboard`)
 }
 
@@ -50,6 +64,8 @@ const leaveTeam = (teamId) => {
       console.error(error)
     })
 }
+
+const updateSelected = () => {}
 
 onMounted(async () => {
   try {
@@ -81,7 +97,26 @@ onMounted(async () => {
         <BaseButton label="create team" color="info" @click="isCreateModalOpen = true" />
       </SectionTitleLineWithButton>
 
-      <CardBox>
+      <BaseTable
+        :headers="headers"
+        :items="teams"
+        selectable
+        @update:selected-items="updateSelected"
+      >
+        <template #actions="{ item }">
+          <BaseButtons>
+            <BaseButton color="info" :rounded-full="true" small @click="() => goToTeam(item)" />
+            <BaseButton
+              color="danger"
+              :rounded-full="true"
+              outline
+              small
+              @click="() => leaveTeam(item)"
+            />
+          </BaseButtons>
+        </template>
+      </BaseTable>
+      <!-- <CardBox hasTable>
         <table class="w-full">
           <thead>
             <tr class="border-b">
@@ -97,7 +132,7 @@ onMounted(async () => {
               <td class="p-3">{{ team.teamManagerUsername }}</td>
               <td class="p-3">{{ team.myTeamRole }}</td>
               <td class="p-3">
-                <!-- // TODO: 팀 매니저는 팀 삭제 가능하도록 버튼 구현. -->
+                // TODO: 팀 매니저는 팀 삭제 가능하도록 버튼 구현.
                 <BaseButtons type="justify-start lg:justify-center" no-wrap>
                   <BaseButton
                     label="보기"
@@ -119,7 +154,7 @@ onMounted(async () => {
             </tr>
           </tbody>
         </table>
-      </CardBox>
+      </CardBox> -->
 
       <CardBoxModal
         v-model="isCreateModalOpen"
