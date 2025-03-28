@@ -14,6 +14,7 @@ import BaseDivider from '@/components/BaseDivider.vue'
 import router from '@/router'
 import BaseButtons from '@/components/BaseButtons.vue'
 import BaseTable from '@/components/BaseTable.vue'
+import TeamTable from '@/components/team/TeamTable.vue'
 
 const isCreateModalOpen = ref(false)
 
@@ -37,12 +38,6 @@ const confirm = () => {
 
 const teams = ref([])
 
-const headers = [
-  { key: 'teamName', label: '팀 이름' },
-  { key: 'teamManagerUsername', label: '팀장' },
-  { key: 'myTeamRole', label: '역할' },
-]
-
 const goToTeam = (item) => {
   console.log('item:', item) // item 값 확인
   const teamId = item.teamId
@@ -54,7 +49,8 @@ const goToTeam = (item) => {
   router.push(`/teams/${teamId}/dashboard`)
 }
 
-const leaveTeam = (teamId) => {
+const leaveTeam = (item) => {
+  const teamId = item.teamId
   teamApiClient
     .leaveTeam(teamId)
     .then(() => {
@@ -64,8 +60,6 @@ const leaveTeam = (teamId) => {
       console.error(error)
     })
 }
-
-const updateSelected = () => {}
 
 onMounted(async () => {
   try {
@@ -97,64 +91,7 @@ onMounted(async () => {
         <BaseButton label="create team" color="info" @click="isCreateModalOpen = true" />
       </SectionTitleLineWithButton>
 
-      <BaseTable
-        :headers="headers"
-        :items="teams"
-        selectable
-        @update:selected-items="updateSelected"
-      >
-        <template #actions="{ item }">
-          <BaseButtons>
-            <BaseButton color="info" :rounded-full="true" small @click="() => goToTeam(item)" />
-            <BaseButton
-              color="danger"
-              :rounded-full="true"
-              outline
-              small
-              @click="() => leaveTeam(item)"
-            />
-          </BaseButtons>
-        </template>
-      </BaseTable>
-      <!-- <CardBox hasTable>
-        <table class="w-full">
-          <thead>
-            <tr class="border-b">
-              <th class="p-3 text-left">teamName</th>
-              <th class="p-3 text-left">teamManagerUsername</th>
-              <th class="p-3 text-left">myRole</th>
-              <th class="p-3 text-center">액션</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="team in teams" :key="team.teamId" class="border-b">
-              <td class="p-3">{{ team.teamName }}</td>
-              <td class="p-3">{{ team.teamManagerUsername }}</td>
-              <td class="p-3">{{ team.myTeamRole }}</td>
-              <td class="p-3">
-                // TODO: 팀 매니저는 팀 삭제 가능하도록 버튼 구현.
-                <BaseButtons type="justify-start lg:justify-center" no-wrap>
-                  <BaseButton
-                    label="보기"
-                    color="info"
-                    :rounded-full="true"
-                    small
-                    @click="() => goToTeam(team.teamId)"
-                  />
-                  <BaseButton
-                    label="탈퇴"
-                    color="danger"
-                    :rounded-full="true"
-                    outline
-                    small
-                    @click="() => leaveTeam(team.teamId)"
-                  />
-                </BaseButtons>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </CardBox> -->
+      <TeamTable :teams="teams" @go-to-team="goToTeam" @leave-team="leaveTeam" />
 
       <CardBoxModal
         v-model="isCreateModalOpen"

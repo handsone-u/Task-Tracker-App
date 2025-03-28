@@ -6,6 +6,9 @@ import BaseButtons from '../BaseButtons.vue'
 import { mdiTrashCan, mdiHandOkay } from '@mdi/js'
 import BaseLevel from '../BaseLevel.vue'
 import TableCheckboxCell from '../TableCheckboxCell.vue'
+import BaseTable from '../BaseTable.vue'
+
+const headers = [{ key: 'teamName', label: 'Team Name' }]
 
 const invitations = ref([])
 
@@ -88,44 +91,28 @@ onMounted(async () => {
 </script>
 
 <template>
-  <table>
-    <thead>
-      <tr>
-        <th />
-        <th>Team Name</th>
-        <th />
-      </tr>
-    </thead>
-    <tbody>
-      <tr v-for="item in itemsPaginated" :key="item.id">
-        <TableCheckboxCell @checked="checked($event, item)" />
-        <td data-label="Name">
-          {{ item.teamName }}
-        </td>
-
-        <td class="before:hidden lg:w-1 whitespace-nowrap">
-          <BaseButtons type="justify-start lg:justify-end" no-wrap>
-            <BaseButton
-              color="info"
-              label="Accept"
-              :icon="mdiHandOkay"
-              :rounded-full="true"
-              @click="() => acceptInvitation(item.id)"
-              small
-            />
-            <BaseButton
-              color="danger"
-              label="Decline"
-              :icon="mdiTrashCan"
-              :rounded-full="true"
-              @click="() => declineInvitation(item.id)"
-              small
-            />
-          </BaseButtons>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <BaseTable :headers="headers" :items="itemsPaginated" selectable @update:selected-items="">
+    <template #actions="{ item }">
+      <BaseButtons type="justify-start lg:justify-end" no-wrap>
+        <BaseButton
+          color="info"
+          label="Accept"
+          :icon="mdiHandOkay"
+          :rounded-full="true"
+          @click="() => acceptInvitation(item.id)"
+          small
+        />
+        <BaseButton
+          color="danger"
+          label="Decline"
+          :icon="mdiTrashCan"
+          :rounded-full="true"
+          @click="() => declineInvitation(item.id)"
+          small
+        />
+      </BaseButtons>
+    </template>
+  </BaseTable>
 
   <div class="p-3 lg:px-6 border-t border-gray-100 dark:border-slate-800">
     <BaseLevel>

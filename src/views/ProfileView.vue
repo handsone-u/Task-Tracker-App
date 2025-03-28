@@ -210,9 +210,7 @@ const submitPassword = () => {
       </div>
       <SectionTitleLineWithButton :icon="mdiAccountMultiplePlus" title="Invitation">
       </SectionTitleLineWithButton>
-      <CardBox class="mb-6" has-table>
-        <InvitationTable />
-      </CardBox>
+      <InvitationTable />
     </SectionMain>
   </LayoutAuthenticated>
 </template>
