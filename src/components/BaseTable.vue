@@ -3,6 +3,7 @@ import BaseButtons from './BaseButtons.vue'
 import CardBox from './CardBox.vue'
 import { ref, watch } from 'vue'
 
+// TODO: 페이징 추가 필요
 const props = defineProps({
   headers: {
     type: Array,

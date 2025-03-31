@@ -13,13 +13,16 @@ import { useRoute } from 'vue-router'
 import { mdiAccountGroup } from '@mdi/js'
 import { useTeamStore } from '@/stores/team'
 import BaseButtons from '@/components/BaseButtons.vue'
+import TeamCategoryTagManagement from '@/components/team/TeamCategoryTagManagement.vue'
 
 const route = useRoute()
 const userStore = useUserStore()
 const teamStore = useTeamStore()
 
 const activeTab = ref('projects')
-const isTeamLeader = ref('TEAM_MEMBER')
+const isTeamLeader = computed(() => {
+  return true
+})
 
 const teamId = ref(route.params.teamId)
 
@@ -44,26 +47,34 @@ watch(
       <SectionTitleLineWithButton title="Team Dashboard" :icon="mdiAccountGroup" main>
         <BaseButtons>
           <BaseButton
+            v-if="isTeamLeader"
+            :active="activeTab === 'management'"
+            @click="activeTab = 'management'"
+            color="danger"
+            label="Team Management"
+            small
+          />
+          <BaseButton
             :active="activeTab === 'members'"
             @click="activeTab = 'members'"
+            color="info"
             label="Team Members"
             small
           />
           <BaseButton
             :active="activeTab === 'projects'"
             @click="activeTab = 'projects'"
+            color="info"
             label="Projects"
             small
           />
           <BaseButton
-            v-if="isTeamLeader"
-            :active="activeTab === 'management'"
-            @click="activeTab = 'management'"
-            label="Team Management"
+            :active="activeTab === 'categoryAndTagManagement'"
+            @click="activeTab = 'categoryAndTagManagement'"
+            color="info"
+            label="Category/Tag"
             small
           />
-          <BaseButton label="Category 관리" small />
-          <BaseButton label="Tag 관리" small />
         </BaseButtons>
       </SectionTitleLineWithButton>
       <div class="tabs flex space-x-4 border-b"></div>
@@ -72,10 +83,13 @@ watch(
           <TeamManagement />
         </div>
         <div v-else-if="activeTab === 'members'">
-          <TeamMembers />
+          <TeamMembers :isTeamLeader="isTeamLeader" />
         </div>
         <div v-else-if="activeTab === 'projects'">
           <TeamProjects />
+        </div>
+        <div v-else-if="activeTab === 'categoryAndTagManagement'">
+          <TeamCategoryTagManagement />
         </div>
       </div>
     </SectionMain>
