@@ -8,6 +8,7 @@ import { useDarkModeStore } from './stores/darkMode'
 import { useUserStore } from './stores/user'
 
 import './css/main.css'
+import { useTeamStore } from './stores/team'
 
 // Init Pinia
 const pinia = createPinia()
@@ -43,6 +44,8 @@ if (localStorage.getItem('jwt')) {
     localStorage.getItem('username'),
   )
 }
+
+const teamStore = useTeamStore(pinia)
 
 // Default title tag
 const defaultDocumentTitle = 'Task-Tracker'

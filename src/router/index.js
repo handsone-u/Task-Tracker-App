@@ -49,7 +49,6 @@ const routes = [
     path: `/teams/:teamId/dashboard`,
     name: 'team-dashboard',
     component: () => import('@/views/TeamDashboardView.vue'),
-    props: true,
   },
 ]
 
