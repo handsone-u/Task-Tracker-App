@@ -26,6 +26,11 @@ const isTeamLeader = computed(() => {
 
 const teamId = ref(route.params.teamId)
 
+const team = ref({
+  teamName: 'team1',
+  description: 'desc',
+})
+
 watch(
   () => route.params.teamId,
   async (newTeamId) => {
@@ -80,7 +85,7 @@ watch(
       <div class="tabs flex space-x-4 border-b"></div>
       <div class="tab-content mt-4">
         <div v-if="activeTab === 'management'">
-          <TeamManagement />
+          <TeamManagement v-model="team" />
         </div>
         <div v-else-if="activeTab === 'members'">
           <TeamMembers :isTeamLeader="isTeamLeader" />
