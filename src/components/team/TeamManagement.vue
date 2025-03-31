@@ -19,7 +19,7 @@ const emit = defineEmits(['update:modelValue'])
 
 const value = computed({
   get: () => props.modelValue,
-  set: (value) => emit('update:modelValue', value),
+  set: (newValue) => emit('update:modelValue', newValue),
 })
 
 // TODO: call update API

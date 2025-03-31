@@ -31,6 +31,16 @@ const team = ref({
   description: 'desc',
 })
 
+const categories = ref([
+  { id: 1, name: 'c1' },
+  { id: 2, name: 'c2' },
+])
+
+const tags = ref([
+  { id: 3, name: 't1' },
+  { id: 4, name: 't2' },
+])
+
 watch(
   () => route.params.teamId,
   async (newTeamId) => {
@@ -94,7 +104,7 @@ watch(
           <TeamProjects />
         </div>
         <div v-else-if="activeTab === 'categoryAndTagManagement'">
-          <TeamCategoryTagManagement />
+          <TeamCategoryTagManagement v-model:categories="categories" v-model:tags="tags" />
         </div>
       </div>
     </SectionMain>

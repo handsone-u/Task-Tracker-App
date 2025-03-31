@@ -40,6 +40,7 @@ function selectAll(event) {
 
 <template>
   <CardBox class="mb-6" has-table>
+    <!-- FIXME: 화면 작아지면 헤더랑 바디가 분리됨. -->
     <table class="w-full">
       <tr>
         <th v-if="selectable" class="p-3 text-left">
