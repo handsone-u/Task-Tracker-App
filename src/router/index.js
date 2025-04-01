@@ -50,6 +50,14 @@ const routes = [
     name: 'team-dashboard',
     component: () => import('@/views/TeamDashboardView.vue'),
   },
+  {
+    meta: {
+      title: 'Projects',
+    },
+    path: `/projects`,
+    name: 'projects',
+    component: () => import('@/views/ProjectView.vue'),
+  },
 ]
 
 const router = createRouter({
