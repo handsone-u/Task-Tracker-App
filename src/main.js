@@ -16,14 +16,6 @@ const pinia = createPinia()
 // Create Vue app
 createApp(App).use(router).use(pinia).mount('#app')
 
-// Init main store
-// TODO: Remove this store.
-const mainStore = useMainStore(pinia)
-
-// Fetch sample data
-mainStore.fetchSampleClients()
-mainStore.fetchSampleHistory()
-
 // Init dark mode store
 const darkModeStore = useDarkModeStore(pinia)
 
