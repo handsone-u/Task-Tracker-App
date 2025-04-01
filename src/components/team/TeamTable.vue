@@ -22,7 +22,7 @@ const updateSelected = () => {}
 </script>
 
 <template>
-  <BaseTable :headers="headers" :items="teams" selectable @update:selected-items="updateSelected">
+  <BaseTable :headers="headers" :items="teams" checkable @update:selected-items="updateSelected">
     <template #actions="{ item }">
       <BaseButtons>
         <BaseButton color="info" :rounded-full="true" small @click="$emit('go-to-team', item)" />

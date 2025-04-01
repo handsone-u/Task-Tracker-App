@@ -1,7 +1,8 @@
 <script setup>
 import BaseButtons from './BaseButtons.vue'
 import CardBox from './CardBox.vue'
-import { ref, watch } from 'vue'
+import { ref } from 'vue'
+import TableCheckboxCell from './TableCheckboxCell.vue'
 
 // TODO: 페이징 추가 필요
 const props = defineProps({
@@ -13,7 +14,7 @@ const props = defineProps({
     type: Array,
     required: true,
   },
-  selectable: {
+  checkable: {
     type: Boolean,
     default: false,
   },
@@ -40,26 +41,25 @@ function selectAll(event) {
 
 <template>
   <CardBox class="mb-6" has-table>
-    <!-- FIXME: 화면 작아지면 헤더랑 바디가 분리됨. -->
     <table class="w-full">
-      <tr>
-        <th v-if="selectable" class="p-3 text-left">
-          <input type="checkbox" @change="selectAll" />
-        </th>
-        <th v-for="header in headers" :key="header.key" class="p-3 text-left">
-          {{ header.label }}
-        </th>
-      </tr>
+      <thead>
+        <tr>
+          <th v-if="checkable" class="p-3 text-left">
+            <input type="checkbox" @change="selectAll" />
+          </th>
+          <th v-for="header in headers" :key="header.key" class="p-3 text-left">
+            {{ header.label }}
+          </th>
+        </tr>
+      </thead>
       <tbody>
         <tr v-for="(item, index) in items" :key="index" class="border-b">
-          <td v-if="selectable" class="p-3 text-left">
-            <input type="checkbox" :value="item" @change="selectItem(item)" />
-          </td>
-          <td v-for="header in headers" :key="header.key" class="p-3">
+          <TableCheckboxCell v-if="checkable" />
+          <td v-for="header in headers" :key="header.key" :data-label="header.label" class="p-3">
             {{ item[header.key] }}
           </td>
-          <td v-if="$slots.actions" class="p-3">
-            <BaseButtons type="justify-start lg:justify-center" no-wrap>
+          <td v-if="$slots.actions" class="before:hidden lg:w-1 whitespace-nowrap">
+            <BaseButtons type="justify-start lg:justify-end" no-wrap>
               <slot name="actions" :item="item" />
             </BaseButtons>
           </td>

@@ -91,7 +91,7 @@ onMounted(async () => {
 </script>
 
 <template>
-  <BaseTable :headers="headers" :items="itemsPaginated" selectable @update:selected-items="">
+  <BaseTable :headers="headers" :items="itemsPaginated" checkable @update:selected-items="">
     <template #actions="{ item }">
       <BaseButtons type="justify-start lg:justify-end" no-wrap>
         <BaseButton

@@ -48,7 +48,7 @@ const openInviteModal = () => {
   <BaseTable
     :headers="headers"
     :items="members"
-    selectable
+    checkable
     @update:selected-items="handleSelectedMembers"
   >
     <template #actions="{ item }">

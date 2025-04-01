@@ -63,7 +63,7 @@ const deleteTag = (id) => {
   <div class="flex space-x-4">
     <div class="flex-1">
       <SectionTitle>Category</SectionTitle>
-      <BaseTable :headers="categoryHeaders" :items="categories" selectable>
+      <BaseTable :headers="categoryHeaders" :items="categories" checkable>
         <template #actions="{ item }">
           <BaseButtons>
             <BaseButton label="Edit" color="warning" @click="() => editCategory(item.id)" small />
@@ -80,7 +80,7 @@ const deleteTag = (id) => {
 
     <div class="flex-1">
       <SectionTitle>Tag</SectionTitle>
-      <BaseTable :headers="tagHeaders" :items="tags" selectable>
+      <BaseTable :headers="tagHeaders" :items="tags" checkable>
         <template #actions="{ item }">
           <BaseButtons>
             <BaseButton label="Edit" color="warning" @click="() => editTag(item.id)" small />

@@ -32,7 +32,7 @@ const deleteProject = (id) => {
 </script>
 <template>
   <SectionTitle>Projects</SectionTitle>
-  <BaseTable :headers="headers" :items="projects" selectable>
+  <BaseTable :headers="headers" :items="projects" checkable>
     <template #actions="{ item }">
       <BaseButton label="View" color="info" @click="() => viewProject(item.id)" small />
       <BaseButton label="Delete" color="danger" @click="() => deleteProject(item.id)" small />
